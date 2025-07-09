@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -10,6 +11,18 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
+    function form_login()
+    {
+        // $session = Session::get('data');
+        $session = session()->get('data');
+        return response()->json([
+            'status'  => 'success',
+            'msg'     => 'success',
+            'errors'   => null,
+            'data'    => $session['role'],
+            'content' => null,
+        ], 200);
+    }
     public function login(Request $request)
     {
         $rules = [
@@ -25,19 +38,19 @@ class LoginController extends Controller
             $respon = [
                 'status'  => 'validationerror',
                 'msg'     => 'Validation Error',
-                'erors'   => $validator->errors(),
+                'errors'   => $validator->errors(),
                 'content' => null,
             ];
             return response()->json($respon, 200);
         } else {
             $credentials = $request->only('email', 'password');
             if (Auth::attempt($credentials)) {
-                $user = User::join('skpds', 'users.id_skpd', '=', 'skpds.id')->where('email', $request->email)->select('users.name', 'users.email', 'users.id', 'users.role', 'users.status_account', 'skpds.skpd_name', 'users.id_skpd')->first();
-                Session::put(['data' => $user, 'id_field' => 1]);
+                $user = User::where('email', $request->email)->select('email', 'role')->first();
+                Session::put(['data' => $user]);
                 $respon = [
                     'status'  => 'success',
                     'msg'     => 'success',
-                    'erors'   => null,
+                    'errors'   => null,
                     'data'    => Session::get('data'),
                     'content' => null,
                 ];
@@ -46,7 +59,7 @@ class LoginController extends Controller
                 $respon = [
                     'status'  => 'failed',
                     'msg'     => 'failed',
-                    'erors'   => null,
+                    'errors'   => null,
                     'content' => null,
                 ];
                 return response()->json($respon, 200);

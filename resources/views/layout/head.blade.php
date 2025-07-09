@@ -6,6 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
     <!--end::Accessibility Meta Tags-->
     <!--begin::Primary Meta Tags-->
     <meta name="title" content="AdminLTE v4 | Dashboard">

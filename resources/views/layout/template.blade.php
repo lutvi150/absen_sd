@@ -21,8 +21,8 @@
             <!--begin::Sidebar Brand-->
             <div class="sidebar-brand">
                 <!--begin::Brand Link--> <a href="./index.html" class="brand-link">
-                    <!--begin::Brand Image--> <img src="/assets/img/AdminLTELogo.png" alt="AdminLTE Logo"
-                        class="brand-image opacity-75 shadow">
+                    <!--begin::Brand Image-->
+                    {{-- <img src="/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow"> --}}
                     <!--end::Brand Image-->
                     <!--begin::Brand Text--> <span class="brand-text fw-light">{{ env('APP_NAME') }}</span>
                     <!--end::Brand Text-->
@@ -50,13 +50,13 @@
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Dashboard</h3>
+                            <h3 class="mb-0">{{ $title }}</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    Dashboard
+                                    {{ $title }}
                                 </li>
                             </ol>
                         </div>

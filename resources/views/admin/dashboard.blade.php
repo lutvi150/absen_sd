@@ -279,6 +279,5 @@
 @endsection
 @section('script')
     <script>
-        console.log('tes');
     </script>
 @endsection

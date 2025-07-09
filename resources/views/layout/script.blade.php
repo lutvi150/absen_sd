@@ -13,6 +13,8 @@
 <script src="{{ asset('assets/js/adminlte.js') }}"></script>
 <!--end::Required Plugin(AdminLTE)-->
 <!--begin::OverlayScrollbars Configure-->
+{{-- jquery form --}}
+<script src="{{ asset('assets/jqform/form/src/jquery.form.js') }}"></script>
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper"
     const Default = {
