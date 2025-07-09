@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ControllerNotif;
 use App\Http\Controllers\KelasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -43,3 +44,7 @@ Route::prefix('admin')->group(function () {
 });
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login', [LoginController::class, 'login'])->name('login');
+// zenziva
+Route::get('whatsapp', [ControllerNotif::class, 'whatsapp'])->name('whatsapp');
+Route::get('check-balance', [ControllerNotif::class, 'checkBalance'])->name('check-balance');
+Route::post('send-message', [ControllerNotif::class,'sendMessage'])->name('send-message');

@@ -88,16 +88,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title modal-add-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <form enctype="multipart/form-data" id="form-add" action="{{route('kelas-add')}}" method="POST">
                     <div class="mb-3">
                         <label for="nama_kelas" class="form-label">Nama Kelas</label>
-                        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" placeholder="Masukkan Nama Kelas">
-                        <span class="e-nama_kelas text-error">tes</span>
+                        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas"
+                            placeholder="Masukkan Nama Kelas">
+                        <span class="e-nama_kelas text-error"></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -114,15 +112,24 @@
             $('.modal-add-title').text('Tambah Kelas');
             $('#modal-add').modal('show');
         }
-        store_data=()=>{
+        store_data = () => {
+            $(".text-error").text('');
             $.ajax({
-                type: "POST", headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-                url: "url",
-                data: "data",
-                dataType: "dataType",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: $("#form-add").attr('action'),
+                data: {
+                    nama_kelas: $("#nama_kelas").val(),
+                },
+                dataType: "JSON",
                 success: function (response) {
+                    if (response.status) {
+                        
+                    }
+                },
+                error: function (response) {
                     
                 }
             });
