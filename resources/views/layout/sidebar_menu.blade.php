@@ -19,7 +19,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('data-kelas') }}" class="nav-link">
+        <a href="{{ route('kelas') }}" class="nav-link">
             <i class="nav-icon bi bi-person-check"></i>
             <p>Data Kelas</p>
         </a>

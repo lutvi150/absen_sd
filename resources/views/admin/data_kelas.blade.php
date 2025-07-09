@@ -83,7 +83,7 @@
 
 {{-- use for modal --}}
 <!-- Modal add -->
-<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+<div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,18 +93,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form enctype="multipart/form-data" id="form-add" action="{{route('admin.kelas.store')}}" method="POST">
+                <form enctype="multipart/form-data" id="form-add" action="{{route('kelas-add')}}" method="POST">
                     <div class="mb-3">
                         <label for="nama_kelas" class="form-label">Nama Kelas</label>
                         <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" placeholder="Masukkan Nama Kelas">
-                    </div>
-                    <div class="mb-3">
-                        <label for="jumlah_siswa" class="form-label">Jumlah Siswa</label>
-                        <input type="number" class="form-control" id="jumlah_siswa" placeholder="Masukkan Jumlah Siswa">
+                        <span class="e-nama_kelas text-error">tes</span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-primary">Simpan</button>
+                        <button type="button" onclick="store_data()" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -116,6 +113,19 @@
         show_modal = () => {
             $('.modal-add-title').text('Tambah Kelas');
             $('#modal-add').modal('show');
+        }
+        store_data=()=>{
+            $.ajax({
+                type: "POST", headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+                url: "url",
+                data: "data",
+                dataType: "dataType",
+                success: function (response) {
+                    
+                }
+            });
         }
     </script>
     @endsection

@@ -11,14 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-    }
+        Schema::create('siswa', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_siswa');
+            $table->string('nis')->unique();
+            $table->enum('jenis_kelamin', ['L', 'P'])->default('L');
+            $table->text('foto');
+            $table->text('alamat');
+            $table->integer('id_kelas');
+            // $table->foreign("id_kelas")->references("id")->on("kelas")->onDelete("cascade");
+            // $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
+            // $table->foreign('id_orangtua')->references('id_siswa')->on('orang_tua')->onDelete('cascade');
+            $table->timestamps();
+    });
+
+}
+     
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('siswa');
     }
 };

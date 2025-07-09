@@ -1,10 +1,10 @@
  <footer class="app-footer">
      <!--begin::To the end-->
-     <div class="float-end d-none d-sm-inline">Anything you want</div>
+     <div class="float-end d-none d-sm-inline">Dikembangkan oleh</div>
      <!--end::To the end-->
      <!--begin::Copyright--> <strong>
          Copyright &copy; {{ now('Y') }}&nbsp;
-         <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
+         <a href="/" class="text-decoration-none">Winta</a>.
      </strong>
      All rights reserved.
      <!--end::Copyright-->

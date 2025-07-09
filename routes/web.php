@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\KelasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -32,9 +33,10 @@ Route::prefix('login')->group(function () {});
 // admin route
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-    Route::get('kelas/data', [AdminController::class, 'data_kelas'])->name('kelas');
+    Route::get('kelas/data', [KelasController::class, 'index'])->name('kelas');
     Route::post('kelas/kelas-add', [AdminController::class, 'data_kelas_add_post'])->name('kelas-add');
     Route::get('kelas/kelas-edit/{id}', [AdminController::class, 'data_kelas_edit'])->name('kelas-edit');
+    Route::get('kelas/kelas-delete/{id}',[AdminController::class, 'data_kelas_delete'])->name('kelas-delete');
     
     Route::get('data-siswa', [AdminController::class, 'data_siswa'])->name('data-siswa');
     Route::get('data-guru', [AdminController::class, 'data_guru'])->name('data-guru');

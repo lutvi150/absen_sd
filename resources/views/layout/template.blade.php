@@ -20,7 +20,7 @@
         <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
             <!--begin::Sidebar Brand-->
             <div class="sidebar-brand">
-                <!--begin::Brand Link--> <a href="./index.html" class="brand-link">
+                <!--begin::Brand Link--> <a href="{{ url('/') }}" class="brand-link">
                     <!--begin::Brand Image-->
                     {{-- <img src="/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow"> --}}
                     <!--end::Brand Image-->
