@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
-	<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--end::Accessibility Meta Tags-->
     <!--begin::Primary Meta Tags-->
     <meta name="title" content="AdminLTE v4 | Dashboard">
@@ -43,5 +43,12 @@
         integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
         integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
-        <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
+        {{-- font awesome --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/custome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/solid.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/brands.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/regular.css') }}">
+{{-- data tables --}}
+<link rel="stylesheet" href="{{ asset('assets/DataTables/datatables.css') }}">
 </head>

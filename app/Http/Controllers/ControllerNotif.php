@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\no;
@@ -10,41 +11,38 @@ class ControllerNotif extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function sendWhatsapp()
+    public function sendWhatsapp($phonenumber)
     {
         $userkey = env('zenziva_userkey');
         $apiKey  = env('zenziva_apikey');
-        $telepon = '081111111111';
         // costume message
         $jam = date('H');
         if ($jam >= 5 && $jam < 11) {
-            $waktu= "Selamat Pagi";
+            $waktu = "Selamat Pagi";
         } elseif ($jam >= 11 && $jam < 15) {
-            $waktu= "Selamat Siang";
+            $waktu = "Selamat Siang";
         } elseif ($jam >= 15 && $jam < 18) {
-            $waktu= "Selamat Sore";
+            $waktu = "Selamat Sore";
         } else {
-            $waktu= "Selamat Malam";
+            $waktu = "Selamat Pagi";
         }
-        $sekolah= env('APP_NAME');
-        $message  = "$waktu, ini adalah pesan otomatis dari sistem absensi $sekolah, anak anda tidak hadir hari ini, silahkan cek aplikasi untuk informasi lebih lanjut.";
-        $response = Http::asForm()->post('https://console.zenziva.net/wareguler/api/sendWA/', [
+        $sekolah = env('APP_NAME');
+        $message  = "$waktu, ini adalah pesan otomatis dari sistem absensi $sekolah, anak anda yang bernama Fiska Wahyuni tidak hadir hari ini, silahkan cek aplikasi untuk informasi lebih lanjut.";
+        $response = Http::withOptions(['verify' => false])->asForm()->post('https://console.zenziva.net/wareguler/api/sendWA/', [
             'userkey' => $userkey,
             'passkey' => $apiKey,
-            'to'      => $telepon,
+            'to'      => $phonenumber,
             'message' => $message,
         ]);
 
         $result = $response->json(); // atau $response->body() jika ingin raw string
-// Contoh handling jika gagal
+        // Contoh handling jika gagal
         if ($response->failed()) {
             // log error atau tampilkan error
             dd('Gagal kirim: ' . $response->status());
         }
     }
-    function sendMessage()  {
-        
-    }
+    function sendMessage() {}
     public function checkBalance()
     {
         $userkey  = env('zenziva_userkey');

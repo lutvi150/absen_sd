@@ -10,7 +10,7 @@
                 <div class="card mb-12">
                     <div class="card-header">
                         <h3 class="card-title">Data Kelas</h3> <br>
-                        <button class="btn btn-sm btn-success" onclick="show_modal()"><i class="fa fa-pluas"></i> Tambah
+                        <button class="btn btn-sm btn-success" onclick="show_modal()"><i class="fa fa-plus"></i> Tambah
                             Kelas</button>
                     </div> <!-- /.card-header -->
                     <div class="card-body p-0">
@@ -24,52 +24,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($kelas as $item)
                                 <tr class="align-middle">
-                                    <td>1.</td>
-                                    <td>Update software</td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->nama_kelas }}</td>
                                     <td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                        </div>
+                                        <label for="" class="label label-danger">50</label>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                        <button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})"><i
+                                                class="fa fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-warning" onclick="edit_data({{ $item->id }})"><i
+                                                class="fa fa-edit"></i></button>
                                     </td>
                                 </tr>
-                                <tr class="align-middle">
-                                    <td>2.</td>
-                                    <td>Clean database</td>
-                                    <td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar text-bg-warning" style="width: 70%">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td> <span class="badge text-bg-warning">70%</span> </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td>3.</td>
-                                    <td>Cron job running</td>
-                                    <td>
-                                        <div class="progress progress-xs progress-striped active">
-                                            <div class="progress-bar text-bg-primary" style="width: 30%">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td> <span class="badge text-bg-primary">30%</span> </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td>4.</td>
-                                    <td>Fix and squish bugs</td>
-                                    <td>
-                                        <div class="progress progress-xs progress-striped active">
-                                            <div class="progress-bar text-bg-success" style="width: 90%">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td> <span class="badge text-bg-success">90%</span> </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div> <!-- /.card-body -->
@@ -125,14 +94,103 @@
                 },
                 dataType: "JSON",
                 success: function (response) {
-                    if (response.status) {
-                        
+                    if (response.status == true) {
+                        Notiflix.Report.success(
+                            `Berhasil`,
+                            `"Data Kelas Berhasil Disimpan." <br/><br/>- Admin`,
+                            `Okay`,
+                        );
+                        $('#modal-add').modal('hide');
+                        // Optionally, you can refresh the page or update the table here
+                        location.reload();
+                    } else {
+                        console.log('disini');
+
+                        // Handle validation errors
+                        $.each(response.errors, function (key, value) {
+                            $(`.e-${key}`).text(value[0]);
+                        });
+                        Notiflix.Report.failure(
+                            `Kesalahan`,
+                            `"Data Kelas Gagal Disimpan." <br/><br/>- Admin`,
+                            `Okay`,
+                        );
                     }
                 },
-                error: function (response) {
-                    
+                error: function (xhr) {
+                    const status = xhr.status;
+                    if (status === 422) {
+                        let errors = xhr.responseJSON.errors;
+
+                        $.each(errors, function (key, value) {
+                            $(`.e-${key}`).text(value[0]);
+                        });
+                    } else if (status === 404) {
+                        Notiflix.Report.failure(
+                            `Error 404`,
+                            `"Data tidak ditemukan." <br/><br/>- Admin`,
+                            `Okay`,
+                        );
+                    } else if (status === 500) {
+                        Notiflix.Report.failure(
+                            `Error 500`,
+                            `"Terjadi kesalahan pada server." <br/><br/>- Admin`,
+                            `Okay`,
+                        );
+                    } else {
+                        Notiflix.Report.failure(
+                            `Kesalahan`,
+                            `"Terjadi kesalahan tidak diketahui." <br/><br/>- Admin`,
+                            `Okay`,
+                        );
+                    }
+
                 }
             });
+        }
+        delete_data = (id) => {
+            Notiflix.Confirm.show(
+                'Konfirmasi Hapus',
+                'Apakah Anda yakin ingin menghapus data ini?',
+                'Ya',
+                'Tidak',
+                function () {
+                    $.ajax({
+                        type: "GET",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: `{{ url('admin/kelas/kelas-delete/${id}') }}`,
+                        success: function (response) {
+                            if (response.status == true) {
+                                Notiflix.Report.success(
+                                    `Berhasil`,
+                                    `"Data Kelas Berhasil Dihapus." <br/><br/>- Admin`,
+                                    `Okay`,
+                                );
+                                location.reload();
+                            } else {
+                                Notiflix.Report.failure(
+                                    `Gagal`,
+                                    `"Data Kelas Gagal Dihapus." <br/><br/>- Admin`,
+                                    `Okay`,
+                                );
+                            }
+                        },
+                        error: function (xhr) {
+                            Notiflix.Report.failure(
+                                `Kesalahan`,
+                                `"Terjadi kesalahan saat menghapus data." <br/><br/>- Admin`,
+                                `Okay`,
+                            );
+                        }
+                    });
+                },
+                function () {
+                    // User clicked "No"
+                    Notiflix.Notify.info('Penghapusan dibatalkan.');
+                }
+            );
         }
     </script>
     @endsection
