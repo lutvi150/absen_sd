@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_siswa');
             $table->string('nis')->unique();
             $table->enum('jenis_kelamin', ['L', 'P'])->default('L');
-            $table->text('foto');
+            $table->text('foto')->nullable();
             $table->text('alamat');
             $table->integer('id_kelas');
             // $table->foreign("id_kelas")->references("id")->on("kelas")->onDelete("cascade");

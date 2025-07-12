@@ -18,7 +18,7 @@ class SiswaModel extends Model
         'no_hp'
     ];
     public $timestamps = true;
-    public function siswa(){
-        return $this->belongsTo(KelasModel::class,'id_kelas');
-    }
+    // public function siswa(){
+    //     return $this->belongsTo(KelasModel::class,'id_kelas');
+    // }
 }
