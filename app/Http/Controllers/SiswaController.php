@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\KelasModel;
@@ -15,7 +16,12 @@ class SiswaController extends Controller
     public function index()
     {
         $title = "Data Siswa";
-        $siswa = SiswaModel::all();
+        $siswa = SiswaModel::with(['kelas', 'orangtua'])->select('id', 'id_kelas', 'nama_siswa', 'nisn', 'jenis_kelamin', 'foto', 'alamat')->get();
+        // return response()->json([
+        //     'status'  => true,
+        //     'message' => 'Data siswa retrieved successfully.',
+        //     'data'    => $siswa,
+        // ], 200);
         return view('admin.data_siswa', compact("siswa", "title"));
     }
 
@@ -63,24 +69,24 @@ class SiswaController extends Controller
         $siswa = SiswaModel::create([
             'id_kelas'       => $request->id_kelas,
             'nama_siswa'     => $request->nama_siswa,
-            'nis'           => $request->nis_siswa,
+            'nisn'           => $request->nis_siswa,
             'jenis_kelamin'  => $request->jenis_kelamin,
             'foto'           => $request->foto ?? null, // handle foto upload if needed
             'alamat'         => $request->alamat_siswa,
         ]);
-$idSiswa = $siswa->id;
-$orangTuaLk = OrangtuaModel::create([
+        $idSiswa = $siswa->id;
+        $orangTuaLk = OrangtuaModel::create([
             'id_siswa'   => $idSiswa,
             'nama'       => $request->nama_orang_tua_lk,
-            'jenis'      => 'Laki-laki',
+            'jenis'      => 'Ayah',
             'pekerjaan'  => $request->pekerjaan_orang_tua_lk,
             'alamat'     => $request->alamat_orang_tua_lk,
             'no_hp'      => $request->no_telp_orang_tua_lk,
         ]);
-$orangTuaPr = OrangtuaModel::create([   
+        $orangTuaPr = OrangtuaModel::create([
             'id_siswa'   => $idSiswa,
             'nama'       => $request->nama_orang_tua_pr,
-            'jenis'      => 'Perempuan',
+            'jenis'      => 'Ibu',
             'pekerjaan'  => $request->pekerjaan_orang_tua_pr,
             'alamat'     => $request->alamat_orang_tua_pr,
             'no_hp'      => $request->no_telp_orang_tua_pr,
@@ -94,8 +100,7 @@ $orangTuaPr = OrangtuaModel::create([
     /**
      * Display the specified resource.
      */
-    public function show(SiswaModel $siswaModel, $id)
-    {}
+    public function show(SiswaModel $siswaModel, $id) {}
 
     /**
      * Show the form for editing the specified resource.

@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `guru` (
   `nama_guru` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
-  `foto` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` text COLLATE utf8mb4_unicode_ci,
   `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `no_hp` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -65,16 +65,11 @@ CREATE TABLE IF NOT EXISTS `guru` (
   UNIQUE KEY `guru_id_user_unique` (`id_user`),
   UNIQUE KEY `guru_nama_guru_unique` (`nama_guru`),
   UNIQUE KEY `guru_nip_unique` (`nip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen_sd.guru: ~6 rows (approximately)
+-- Dumping data for table absen_sd.guru: ~1 rows (approximately)
 REPLACE INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
-	(1, 2, 'Fuji Delfi Sonata, S.Pd', '1234567890', 'L', 'default', 'atu Bajanjang, BATU BAJANJANG, Kec. Tigo Lurah, Kab. Solok Prov. Sumatera Barat ', '081234567890', '2025-07-09 21:30:05', '2025-07-09 21:30:05'),
-	(2, 3, 'Winta Jusriani', '0987654321', 'P', 'default', 'atu Bajanjang, BATU BAJANJANG, Kec. Tigo Lurah, Kab. Solok Prov. Sumatera Barat ', '089876543210', '2025-07-09 21:30:05', '2025-07-09 21:30:05'),
-	(3, 4, 'Rusima', '1122334455', 'L', 'default', 'atu Bajanjang, BATU BAJANJANG, Kec. Tigo Lurah, Kab. Solok Prov. Sumatera Barat ', '082233445566', '2025-07-09 21:30:05', '2025-07-09 21:30:05'),
-	(4, 5, 'Erika Sari', '5566778899', 'P', 'default', 'atu Bajanjang, BATU BAJANJANG, Kec. Tigo Lurah, Kab. Solok Prov. Sumatera Barat ', '085556677889', '2025-07-09 21:30:05', '2025-07-09 21:30:05'),
-	(5, 6, 'Sri Wahyuni', '2233445566', 'L', 'default', 'atu Bajanjang, BATU BAJANJANG, Kec. Tigo Lurah, Kab. Solok Prov. Sumatera Barat ', '083344556677', '2025-07-09 21:30:05', '2025-07-09 21:30:05'),
-	(6, 7, 'Dewi Lestari', '9988776655', 'P', 'default', 'atu Bajanjang, BATU BAJANJANG, Kec. Tigo Lurah, Kab. Solok Prov. Sumatera Barat ', '087998877665', '2025-07-09 21:30:05', '2025-07-09 21:30:05');
+	(1, 6, 'Winta', '199606122022031004', 'P', NULL, 'Solok', '082285498005', '2025-07-13 09:18:38', '2025-07-13 09:18:38');
 
 -- Dumping structure for table absen_sd.jobs
 CREATE TABLE IF NOT EXISTS `jobs` (
@@ -112,20 +107,21 @@ CREATE TABLE IF NOT EXISTS `job_batches` (
 CREATE TABLE IF NOT EXISTS `kelas` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `nama_kelas` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_guru` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `kelas_nama_kelas_unique` (`nama_kelas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table absen_sd.kelas: ~6 rows (approximately)
-REPLACE INTO `kelas` (`id`, `nama_kelas`, `created_at`, `updated_at`) VALUES
-	(4, 'Kelas 1', '2025-07-09 15:37:40', '2025-07-09 15:37:40'),
-	(5, 'Kelas 2', '2025-07-09 15:37:51', '2025-07-09 15:37:51'),
-	(6, 'Kelas 3', '2025-07-09 15:37:58', '2025-07-09 15:37:58'),
-	(7, 'Kelas 4', '2025-07-09 21:02:43', '2025-07-09 21:02:43'),
-	(8, 'Kelas 5', '2025-07-09 21:02:51', '2025-07-09 21:02:51'),
-	(9, 'Kelas 6', '2025-07-09 21:02:58', '2025-07-09 21:02:58');
+REPLACE INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
+	(4, 'Kelas 1', '1', '2025-07-09 15:37:40', '2025-07-13 10:01:54'),
+	(5, 'Kelas 2', '', '2025-07-09 15:37:51', '2025-07-09 15:37:51'),
+	(6, 'Kelas 3', '', '2025-07-09 15:37:58', '2025-07-09 15:37:58'),
+	(7, 'Kelas 4', '', '2025-07-09 21:02:43', '2025-07-09 21:02:43'),
+	(8, 'Kelas 5', '', '2025-07-09 21:02:51', '2025-07-09 21:02:51'),
+	(9, 'Kelas 6', '', '2025-07-09 21:02:58', '2025-07-09 21:02:58');
 
 -- Dumping structure for table absen_sd.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -158,9 +154,14 @@ CREATE TABLE IF NOT EXISTS `orang_tua` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen_sd.orang_tua: ~0 rows (approximately)
+-- Dumping data for table absen_sd.orang_tua: ~4 rows (approximately)
+REPLACE INTO `orang_tua` (`id`, `id_siswa`, `nama`, `jenis`, `pekerjaan`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
+	(1, 2, 'Budi', 'Ayah', 'Petani', 'Solok', '082285498005', '2025-07-13 08:42:30', '2025-07-13 08:42:30'),
+	(2, 2, 'Lala', 'Ibu', 'Petani', 'Solok', '082285498005', '2025-07-13 08:42:30', '2025-07-13 08:42:30'),
+	(3, 3, 'Arianto', 'Ayah', 'PNS', 'Solok', '082285498005', '2025-07-13 08:43:24', '2025-07-13 08:43:24'),
+	(4, 3, 'Yani', 'Ibu', 'PNS', 'Solok', '082285498005', '2025-07-13 08:43:24', '2025-07-13 08:43:24');
 
 -- Dumping structure for table absen_sd.password_reset_tokens
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
@@ -212,18 +213,21 @@ REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`,
 CREATE TABLE IF NOT EXISTS `siswa` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `nama_siswa` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nis` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nisn` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
-  `foto` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` text COLLATE utf8mb4_unicode_ci,
   `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_kelas` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `siswa_nis_unique` (`nis`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `siswa_nis_unique` (`nisn`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen_sd.siswa: ~0 rows (approximately)
+-- Dumping data for table absen_sd.siswa: ~2 rows (approximately)
+REPLACE INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `foto`, `alamat`, `id_kelas`, `created_at`, `updated_at`) VALUES
+	(2, 'Hana', '1234567891', 'L', NULL, 'Solok', 4, '2025-07-13 08:42:30', '2025-07-13 08:42:30'),
+	(3, 'Lala', '1234567893', 'P', NULL, 'Solok', 4, '2025-07-13 08:43:24', '2025-07-13 08:43:24');
 
 -- Dumping structure for table absen_sd.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -238,12 +242,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table absen_sd.users: ~2 rows (approximately)
 REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$12$01fl2DXLPJrQrONgeda9G.JPhr7gTXdT.DtW5uKgmuNP8cVaCQ9gq', 'admin', NULL, '2025-07-09 12:01:57', '2025-07-09 12:01:57'),
-	(2, 'Guru', 'guru@gmail.com', NULL, '$2y$12$XRcA2fbPhoX2cFFzHrQu4.CtJZZ5enC/lX/S40Ac5ocjHS0muFkgG', 'guru', NULL, '2025-07-09 12:01:57', '2025-07-09 12:01:57');
+	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$12$TB9HQUH2KPjEF7aYHKtB.e1o6TMT25zhlL5WBKykc.0nW4nSx4UKe', 'admin', NULL, '2025-07-09 12:01:57', '2025-07-13 10:24:36'),
+	(6, 'Winta', 'guru@gmail.com', NULL, '$2y$12$ZcSjzN3zSUvFcwB49V32U.FEYG6fxyoZIDHqYGPMHtrvtWJafMqL2', 'guru', NULL, '2025-07-13 09:18:38', '2025-07-13 10:28:05');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

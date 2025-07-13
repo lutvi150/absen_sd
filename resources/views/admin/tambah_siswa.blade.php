@@ -138,6 +138,7 @@
               </div>
                 <div class="col-md-12 text-center">
                     <button class="btn btn-success btn-sm" type="button" onclick="store_data()"><i class="fa fa-save"></i> Simpan</button>
+                    <a href="{{route('data-siswa')}}" type="button" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i>Kembali</a>
                 </div>
             </form>
         </div>
@@ -180,7 +181,7 @@
                     if (response.status == true) {
                         Notiflix.Report.success(
                             `Berhasil`,
-                            `"Data Kelas Berhasil Disimpan." <br/><br/>- Admin`,
+                            `"Data Kelas Berhasil Disimpan." `,
                             `Okay`,
                         );
                         $('#form-tambah-siswa')[0].reset(); // Reset the form
@@ -195,7 +196,7 @@
                         });
                         Notiflix.Report.failure(
                             `Kesalahan`,
-                            `"Data Kelas Gagal Disimpan." <br/><br/>- Admin`,
+                            `Data Kelas Gagal Disimpan`,
                             `Okay`,
                         );
                     }
@@ -211,19 +212,19 @@
                     } else if (status === 404) {
                         Notiflix.Report.failure(
                             `Error 404`,
-                            `"Data tidak ditemukan." <br/><br/>- Admin`,
+                            `Data tidak ditemukan`,
                             `Okay`,
                         );
                     } else if (status === 500) {
                         Notiflix.Report.failure(
                             `Error 500`,
-                            `"Terjadi kesalahan pada server." <br/><br/>- Admin`,
+                            `Terjadi kesalahan pada server`,
                             `Okay`,
                         );
                     } else {
                         Notiflix.Report.failure(
                             `Kesalahan`,
-                            `"Terjadi kesalahan tidak diketahui." <br/><br/>- Admin`,
+                            `Terjadi kesalahan tidak diketahui`,
                             `Okay`,
                         );
                     }

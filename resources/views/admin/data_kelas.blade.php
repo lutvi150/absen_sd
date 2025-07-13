@@ -20,6 +20,7 @@
                                     <th style="width: 10px">#</th>
                                     <th>Kelas</th>
                                     <th>Jumlah Siswa</th>
+                                    <th>Nama Guru Kelas</th>
                                     <th style="width: 40px">Menu</th>
                                 </tr>
                             </thead>
@@ -29,7 +30,10 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama_kelas }}</td>
                                     <td>
-                                        <label for="" class="label label-danger">50</label>
+                                        <label for="" class="label label-danger">{{ $item->siswa_count }}</label>
+                                    </td>
+                                    <td>
+                                        <label for="" class="label label-primary">{{ $item->guru->nama_guru??"-" }}</label>
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})"><i
@@ -66,6 +70,14 @@
                             placeholder="Masukkan Nama Kelas">
                         <span class="e-nama_kelas text-error"></span>
                     </div>
+                    <div class="mb-3">
+                        <label for="id_guru" class="form-label">Nama Guru</label>
+                        <select name="id_guru" class="form-control" id="id_guru">
+
+                        </select>
+                        <span class="e-nama_guru text-error"></span>
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                         <button type="button" onclick="store_data()" class="btn btn-primary">Simpan</button>
@@ -77,9 +89,59 @@
     @endsection
     @section('script')
     <script>
+        data_guru = (callback) => {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('get-guru') }}",
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status) {
+                        let html = '<option value="">-- Pilih Guru --</option>';
+                        $.each(response.data, function (i, v) {
+                            html += `<option value="${v.id}">${v.nama_guru}</option>`;
+                        });
+                        $("#id_guru").html(html);
+
+                        // Jalankan callback setelah data guru berhasil dimuat
+                        if (typeof callback === "function") {
+                            callback();
+                        }
+                    } else {
+                        alert('Gagal mengambil data guru.');
+                    }
+                },
+                error: function (xhr) {
+                    error_function(xhr);
+                }
+            });
+        }
+
         show_modal = () => {
-            $('.modal-add-title').text('Tambah Kelas');
-            $('#modal-add').modal('show');
+            sessionStorage.setItem('jenis','store');
+            data_guru(() => {
+                $('.modal-add-title').text('Tambah Kelas');
+                $('#modal-add').modal('show');
+            });
+        }
+
+        edit_data = (id) => {
+            sessionStorage.setItem('id_kelas',id);
+            sessionStorage.setItem('jenis','update');
+            data_guru(()=>{ $.ajax({
+                type: "GET",
+                url: `{{ url('admin/kelas/${id}/edit') }}`,
+                dataType: "JSON",
+                success: function (response) {
+                    $('#nama_kelas').val(response.data.nama_kelas);
+                    $('#id_guru').val(response.data.id_guru);
+                    $('.modal-add-title').text('Edit Kelas');
+                    $('#modal-add').modal('show');
+                },
+                error: function (xhr) {
+                    error_function(xhr)
+                }
+            });});
+           
         }
         store_data = () => {
             $(".text-error").text('');
@@ -91,6 +153,9 @@
                 url: $("#form-add").attr('action'),
                 data: {
                     nama_kelas: $("#nama_kelas").val(),
+                    id:sessionStorage.getItem('id_kelas'),
+                    jenis:sessionStorage.getItem('jenis'),
+                    id_guru:$("#id_guru").val(),
                 },
                 dataType: "JSON",
                 success: function (response) {
@@ -118,33 +183,7 @@
                     }
                 },
                 error: function (xhr) {
-                    const status = xhr.status;
-                    if (status === 422) {
-                        let errors = xhr.responseJSON.errors;
-
-                        $.each(errors, function (key, value) {
-                            $(`.e-${key}`).text(value[0]);
-                        });
-                    } else if (status === 404) {
-                        Notiflix.Report.failure(
-                            `Error 404`,
-                            `"Data tidak ditemukan." <br/><br/>- Admin`,
-                            `Okay`,
-                        );
-                    } else if (status === 500) {
-                        Notiflix.Report.failure(
-                            `Error 500`,
-                            `"Terjadi kesalahan pada server." <br/><br/>- Admin`,
-                            `Okay`,
-                        );
-                    } else {
-                        Notiflix.Report.failure(
-                            `Kesalahan`,
-                            `"Terjadi kesalahan tidak diketahui." <br/><br/>- Admin`,
-                            `Okay`,
-                        );
-                    }
-
+                    error_function(xhr)
                 }
             });
         }

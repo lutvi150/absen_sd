@@ -28,7 +28,7 @@
         scrollbarAutoHide: "leave",
         scrollbarClickScroll: true
     }
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER)
         if (
             sidebarWrapper &&
@@ -69,4 +69,36 @@
             }
         });
     });
-</script> 
+    // use for error
+    error_function = (xhr) => {
+        {
+            const status = xhr.status;
+            if (status === 422) {
+                let errors = xhr.responseJSON.errors;
+
+                $.each(errors, function (key, value) {
+                    $(`.e-${key}`).text(value[0]);
+                });
+            } else if (status === 404) {
+                Notiflix.Report.failure(
+                    `Error 404`,
+                    `"Data tidak ditemukan." <br/><br/>- Admin`,
+                    `Okay`,
+                );
+            } else if (status === 500) {
+                Notiflix.Report.failure(
+                    `Error 500`,
+                    `"Terjadi kesalahan pada server." <br/><br/>- Admin`,
+                    `Okay`,
+                );
+            } else {
+                Notiflix.Report.failure(
+                    `Kesalahan`,
+                    `"Terjadi kesalahan tidak diketahui." <br/><br/>- Admin`,
+                    `Okay`,
+                );
+            }
+
+        }
+    }
+</script>

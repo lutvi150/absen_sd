@@ -13,7 +13,7 @@
                         <a href="{{ route('siswa-add') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah
                             Data Siswa</a>
                     </div> <!-- /.card-header -->
-                    <div class="card-body p-0">
+                    <div class="card-body p-1">
                         <table class="table table-striped display" id="data-table">
                             <thead>
                                 <tr>
@@ -22,6 +22,7 @@
                                     <th>NIS</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Alamat</th>
+                                    <th>Foto</th>
                                     <th>Nama Ayah</th>
                                     <th>Nama Ibu</th>
                                     <th style="width: 40px">Menu</th>
@@ -29,15 +30,26 @@
                             </thead>
                             <tbody>
                                 @foreach ($siswa as $item)
+                                @php
+            $ayah = collect($item['orangtua'])->firstWhere('jenis', 'Ayah');
+            $ibu  = collect($item['orangtua'])->firstWhere('jenis', 'Ibu');
+        @endphp
                                 <tr class="align-middle">
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->nama_siswa }}</td>
-                                    <td>{{ $item->nis }}</td>
+                                    <td>{{ $item['nama_siswa'] }}</td>
+                                    <td>{{ $item->nisn }}</td>
                                     <td>{{ $item->jenis_kelamin }}</td>
-                                    <td>{{ $item->foto }}</td>
-                                    <td>{{ $item->alamat }}
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $item->alamat }}</td>
+                                    <td>
+                                        @if ($item->foto == null)
+                                            <img src="{{ asset('assets/images/default.png') }}" alt="Foto Guru"
+                                                class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                                        @else
+                                        <img src="{{ asset('storage/' . $item->foto) }}" alt="Foto Guru"
+                                            class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                                        @endif</td>
+                                    <td>{{ $ayah['nama']??"_" }}</td>
+                                    <td>{{ $ibu['nama']??"_" }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})"><i
                                                 class="fa fa-trash"></i></button>

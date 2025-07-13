@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string("nama_guru")->unique();
             $table->string("nip")->unique();
             $table->enum("jenis_kelamin", ["L", "P"])->default("L");
-            $table->text("foto");
+            $table->text("foto")->nullable();
             $table->text('alamat');
-            $table->string("no_hp",15);
+            $table->string("no_hp", 15);
             $table->timestamps();
         });
     }

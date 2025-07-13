@@ -39,7 +39,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{ route('guru-absensi') }}" class="nav-link">
             <i class="nav-icon bi bi-person-check"></i>
             <p>Absensi</p>
         </a>

@@ -15,7 +15,8 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = KelasModel::all();
+        $kelas = KelasModel::withCount('siswa')->get();
+        // dd($kelas);
         return view('admin.data_kelas', compact("kelas", "title"));
     }
 
@@ -41,11 +42,17 @@ class KelasController extends Controller
             ], 422);
         }
 
-        // Simpan data (contoh)
-        $kelas = KelasModel::create([
-            'nama_kelas' => $request->nama_kelas,
-        ]);
-
+        if ($request->jenis == 'store') {
+            $kelas = KelasModel::create([
+                'nama_kelas' => $request->nama_kelas,
+            ]);
+        } else {
+            $kelas = KelasModel::findOrFail($request->id);
+            $kelas->update([
+                'nama_kelas' => $request->nama_kelas,
+                'id_guru' => $request->id_guru
+            ]);
+        }
         return response()->json([
             'status' => true,
             'message' => 'Data berhasil disimpan.',
@@ -66,7 +73,11 @@ class KelasController extends Controller
      */
     public function edit(KelasModel $kelasModel)
     {
-        //
+        return response()->json([
+            'status' => true,
+            'message' => 'Data kelas berhasil diambil.',
+            'data' => $kelasModel
+        ]);
     }
 
     /**

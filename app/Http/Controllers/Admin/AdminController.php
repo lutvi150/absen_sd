@@ -11,6 +11,11 @@ class AdminController extends Controller
         $title = 'Dashboard';
         return view('admin.dashboard', ['title' => $title]);
     }
+    public function guru()
+    {
+        $title = 'Dashboard';
+        return view('guru.dashboard', ['title' => $title]);
+    }
     function data_kelas()
     {
         $title = 'Data Kelas';

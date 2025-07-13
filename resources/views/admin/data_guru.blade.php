@@ -24,7 +24,7 @@
                                     <th>Alamat</th>
                                     <th>No HP</th>
                                     <th>Foto</th>
-                                    <th style="width: 40px">Menu</th>
+                                    <th >Menu</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,7 +37,7 @@
                                     <td>{{ $item->alamat }}</td>
                                     <td>{{ $item->no_hp }}</td>    
                                     <td>
-                                        @if ($item->foto == "default")
+                                        @if ($item->foto == null || $item->foto == '')
                                             <img src="{{ asset('assets/images/default.png') }}" alt="Foto Guru"
                                                 class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
                                         @else
@@ -45,12 +45,17 @@
                                             class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
                                         @endif
                                     </td>
-                                                                    <td>
-                                        <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})"><i
-                                                class="fa fa-trash"></i></button>
-                                        <button class="btn btn-sm btn-warning" onclick="edit_data({{ $item->id }})"><i
-                                                class="fa fa-edit"></i></button>
-                                    </td>
+                                  <td class="">
+    <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})">
+        <i class="fa fa-trash"></i>
+    </button>
+    <button class="btn btn-sm btn-warning" onclick="edit_data({{ $item->id }})">
+        <i class="fa fa-edit"></i>
+    </button>
+    <button class="btn btn-primary btn-sm" onclick="reset_password({{ $item->id_user }})">
+        <i class="fa fa-key"></i>
+    </button>
+</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -64,7 +69,29 @@
     <!--end::Container-->
 </div>
 
-{{-- use for modal --}}
+{{-- ubah Password --}}
+<div class="modal fade" id="edit-password" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ubah Password</h5>
+            </div>
+            <div class="modal-body">
+                 <div class="mb-3">
+                        <label for="nama guru" class="form-label">Password Baru</label>
+                        <input type="text" class="form-control" id="password" name="password"
+                            placeholder="Masukkan Password Baru">
+                        <span class="e-password text-error"></span>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="store_password()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal add -->
 <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -89,6 +116,12 @@
                             placeholder="Masukkan Nama Guru">
                         <span class="e-nama_guru text-error"></span>
                     </div>
+                     <div class="mb-3">
+                        <label for="email guru" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            placeholder="Masukkan Email Guru">
+                        <span class="e-email text-error"></span>
+                    </div>
                     <div class="mb-3">
                         <label for="nip" class="form-label">NIP</label>
                         <input type="text" class="form-control" id="nip" name="nip"
@@ -99,8 +132,8 @@
                         <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
                         <select class="form-select" id="jenis_kelamin" name="jenis_kelamin">
                             <option value="">Pilih Jenis Kelamin</option>
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
                         </select>
                         <span class="e-jenis_kelamin text-error"></span>                        
                     </div>
@@ -151,6 +184,49 @@
                 }
             }
         });
+        reset_password=(id)=>{
+            sessionStorage.setItem('id',id)
+            $("#edit-password").modal("show");
+        }
+        store_password=()=>{
+            $.ajax({
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('ubah-password') }}",
+                data: {
+                    id:sessionStorage.getItem('id'),
+                    password:$("#password").val(),
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status == true) {
+                        Notiflix.Report.success(
+                            `Berhasil`,
+                            `Password berhasil di ubah`,
+                            `Okay`,
+                        );
+                        $('#edit-password').modal('hide');
+                    } else {
+                        console.log('disini');
+
+                        // Handle validation errors
+                        $.each(response.errors, function (key, value) {
+                            $(`.e-${key}`).text(value[0]);
+                        });
+                        Notiflix.Report.failure(
+                            `Kesalahan`,
+                            `Password gagal di ubah`,
+                            `Okay`,
+                        );
+                    }
+                },
+                error: function (xhr) {
+                    error_function(xhr)
+                }
+            });
+        }
         show_modal = () => {
             $('.modal-add-title').text('Tambah Data Guru');
             $('#modal-add').modal('show');
@@ -168,7 +244,7 @@
                     if (response.status == true) {
                         Notiflix.Report.success(
                             `Berhasil`,
-                            `"Data Kelas Berhasil Disimpan." <br/><br/>- Admin`,
+                            `"Data Kelas Berhasil Disimpan`,
                             `Okay`,
                         );
                         $('#modal-add').modal('hide');
@@ -183,7 +259,7 @@
                         });
                         Notiflix.Report.failure(
                             `Kesalahan`,
-                            `"Data Kelas Gagal Disimpan." <br/><br/>- Admin`,
+                            `"Data Kelas Gagal Disimpan`,
                             `Okay`,
                         );
                     }
@@ -199,19 +275,19 @@
                     } else if (status === 404) {
                         Notiflix.Report.failure(
                             `Error 404`,
-                            `"Data tidak ditemukan." <br/><br/>- Admin`,
+                            `"Data tidak ditemukan`,
                             `Okay`,
                         );
                     } else if (status === 500) {
                         Notiflix.Report.failure(
                             `Error 500`,
-                            `"Terjadi kesalahan pada server." <br/><br/>- Admin`,
+                            `"Terjadi kesalahan pada server`,
                             `Okay`,
                         );
                     } else {
                         Notiflix.Report.failure(
                             `Kesalahan`,
-                            `"Terjadi kesalahan tidak diketahui." <br/><br/>- Admin`,
+                            `"Terjadi kesalahan tidak diketahui`,
                             `Okay`,
                         );
                     }
@@ -236,14 +312,14 @@
                             if (response.status == true) {
                                 Notiflix.Report.success(
                                     `Berhasil`,
-                                    `"Data Kelas Berhasil Dihapus." <br/><br/>- Admin`,
+                                    `Data Kelas Berhasil Dihapus`,
                                     `Okay`,
                                 );
                                 location.reload();
                             } else {
                                 Notiflix.Report.failure(
                                     `Gagal`,
-                                    `"Data Kelas Gagal Dihapus." <br/><br/>- Admin`,
+                                    `Data Kelas Gagal Dihapus`,
                                     `Okay`,
                                 );
                             }
@@ -251,7 +327,7 @@
                         error: function (xhr) {
                             Notiflix.Report.failure(
                                 `Kesalahan`,
-                                `"Terjadi kesalahan saat menghapus data." <br/><br/>- Admin`,
+                                `Terjadi kesalahan saat menghapus data`,
                                 `Okay`,
                             );
                         }

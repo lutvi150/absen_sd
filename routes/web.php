@@ -39,7 +39,7 @@ Route::prefix('admin')->group(function () {
     // use for classroom
     Route::get('kelas/data', [KelasController::class, 'index'])->name('kelas');
     Route::post('kelas/kelas-add', [KelasController::class, 'store'])->name('kelas-add');
-    Route::get('kelas/kelas-edit/{id}', [KelasController::class, 'edit'])->name('kelas-edit');
+    Route::get('kelas/{kelasModel}/edit', [KelasController::class, 'edit'])->name('kelas-edit');
     Route::get('kelas/kelas-delete/{id}', [KelasController::class, 'destroy'])->name('kelas-delete');
     // student data 
     Route::get('data-siswa', [SiswaController::class, 'index'])->name('data-siswa');
@@ -49,9 +49,17 @@ Route::prefix('admin')->group(function () {
     Route::get('siswa/siswa-delete/{id}', [SiswaController::class, 'destroy'])->name('siswa-delete');
     // use for teacher
     Route::get('guru/data', [GuruController::class, 'index'])->name('data-guru');
-    Route::post('guru/guru-add', [GuruController::class, 'create'])->name('guru-add');
+    Route::post('guru/guru-add', [GuruController::class, 'store'])->name('guru-add');
     Route::get('guru/guru-edit/{id}', [GuruController::class, 'edit'])->name('guru-edit');
     Route::get('guru/guru-delete/{id}', [GuruController::class, 'destroy'])->name('guru-delete');
+    // teacher ajac
+    Route::get('api/guru/data', [GuruController::class, 'getGuru'])->name('get-guru');
+    Route::post('api/password/edit', [LoginController::class, 'changePassword'])->name('ubah-password');
+});
+// guru route
+Route::prefix('guru')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('guru-dashboard');
+    Route::get('absensi', [GuruController::class, 'absensi'])->name('guru-absensi');
 });
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login', [LoginController::class, 'login'])->name('login');

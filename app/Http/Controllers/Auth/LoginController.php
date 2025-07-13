@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -72,5 +73,18 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+    function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:6',
+        ]);
+        $user = User::findOrFail($request->id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'Password berhasil diubah.'
+        ], 200);
     }
 }

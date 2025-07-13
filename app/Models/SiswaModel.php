@@ -17,6 +17,15 @@ class SiswaModel extends Model
         'alamat',
         'no_hp'
     ];
+    public function orangtua()
+    {
+        return $this->hasMany(OrangtuaModel::class, 'id_siswa');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(KelasModel::class, 'id_kelas');
+    }
     public $timestamps = true;
     // public function siswa(){
     //     return $this->belongsTo(KelasModel::class,'id_kelas');
