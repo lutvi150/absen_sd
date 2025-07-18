@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\GuruModel;
+use App\Models\KelasModel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class GuruController extends Controller
@@ -124,7 +126,19 @@ class GuruController extends Controller
         ], 200);
     }
     // use for attendance
-    function () : Returntype {
-        
+    function absensi()  {
+        $session=Session::get('guru');
+        $kelas= KelasModel::withCount('siswa')->where('id_guru',$session['id'])->get();
+        $title = "Absensi Murid";
+        return view('guru.data_kelas', compact('kelas', 'title'));
+    }
+    function makeAttendance($id_kelas){
+        $siswa= KelasModel::find($id_kelas)->siswa;
+        $title = "Absensi Siswa";
+        return response()->json([
+            'status' => true,
+            'data' => $siswa,
+            'message' => 'Data siswa untuk absensi berhasil ditemukan.'
+        ], 200);
     }
 }

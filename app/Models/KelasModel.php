@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class KelasModel extends Model
 {
-    protected $table = 'kelas';
+protected $table = 'kelas';
     protected $fillable = ['nama_kelas', 'id_guru'];
     public $timestamps = true;
     public function siswa()

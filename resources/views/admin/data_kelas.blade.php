@@ -145,6 +145,7 @@
         }
         store_data = () => {
             $(".text-error").text('');
+            let formData=
             $.ajax({
                 type: "POST",
                 headers: {

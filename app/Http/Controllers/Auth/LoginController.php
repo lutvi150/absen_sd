@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\GuruModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,13 +47,18 @@ class LoginController extends Controller
         } else {
             $credentials = $request->only('email', 'password');
             if (Auth::attempt($credentials)) {
-                $user = User::where('email', $request->email)->select('email', 'role')->first();
+                $user = User::where('email', $request->email)->select('email', 'role','id')->first();
                 Session::put(['data' => $user]);
+                if($user->role == 'guru'){
+                    $guru = GuruModel::where('id_user', $user->id)->first();
+                    Session::put(['guru' => $guru]);
+                }
+                $guru=GuruModel::where('id_user', $user->id)->first();
                 $respon = [
                     'status'  => 'success',
                     'msg'     => 'success',
                     'errors'   => null,
-                    'data'    => Session::get('data'),
+                    'data'    => null,
                     'content' => null,
                 ];
                 return response()->json($respon, 200);

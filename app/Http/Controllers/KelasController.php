@@ -45,6 +45,7 @@ class KelasController extends Controller
         if ($request->jenis == 'store') {
             $kelas = KelasModel::create([
                 'nama_kelas' => $request->nama_kelas,
+                'id_guru' => $request->id_guru
             ]);
         } else {
             $kelas = KelasModel::findOrFail($request->id);

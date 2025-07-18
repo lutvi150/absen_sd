@@ -34,7 +34,7 @@ Route::get('tes2', function () {
 // end testing
 Route::prefix('login')->group(function () {});
 // admin route
-Route::prefix('admin')->group(function () {
+Route::middleware(['auth','cekrole:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     // use for classroom
     Route::get('kelas/data', [KelasController::class, 'index'])->name('kelas');
@@ -60,6 +60,8 @@ Route::prefix('admin')->group(function () {
 Route::prefix('guru')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('guru-dashboard');
     Route::get('absensi', [GuruController::class, 'absensi'])->name('guru-absensi');
+    // make attendance
+    Route::get('absensi/buat-absensi/{id}', [GuruController::class, 'makeAttendance'])->name('guru-absensiweb');
 });
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login', [LoginController::class, 'login'])->name('login');
